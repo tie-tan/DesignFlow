@@ -1,0 +1,35 @@
+export const getAllNodes = (obj) => {
+    let initialNodes = [];
+    let entity_map = {};
+    let attribute_map = {};
+    for(let i = 0;i<obj.length;i++){
+        for(let m = 0;m<obj[i].layers.length;m++){
+            for(let j = 0;j<obj[i].layers[m].participatingItems.length;j++){
+                let entity_data = obj[i].layers[m].participatingItems[j].item.DATA;
+                if(obj[i.name] in entity_map){
+                    entity_map[obj[i].name] = [`${obj[i].name}-${entity_data.name}`];
+                }
+                else{
+                    entity_map[obj[i].name].push(`${obj[i].name}-${entity_data.name}`)
+                }
+                initialNodes.push({
+                    id:`${obj[i].name}-${entity_data.name}`,
+
+                })
+                for(let k = 0;k<entity_data.nslAttributes.length;k++){
+                    if(`${obj[i].name}-${entity_data.name}` in attribute_map){
+                        attribute_map[`${obj[i.name]}-${entity_data.name}`] = [`${obj[i].name}-${entity_data.name}-${entity_data.nslAttributes[k].name}`];
+                    }
+                    else{
+                        attribute_map[`${obj[i].name}-${entity_data.name}`].push(`${obj[i].name}-${entity_data.name}-${entity_data.nslAttributes[k].name}`)
+                    }
+                    initialNodes.push({
+                        id:`${obj[i].name}-${entity_data.name}-${entity_data.nslAttributes[k].name}`
+                    })
+                }
+        }
+    }
+}
+return initialNodes;
+}
+

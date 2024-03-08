@@ -1,11 +1,17 @@
 import {json} from "./gsi";
+import {useGlobalState,getGlobalState,setGlobalState} from './App.js';
 
-let initialNodes = [];
+export let initialNodes = [];
 let initialEdges = [];
 let isvisited = {};
 let displayName_Map = {};
 let entity_map = new Map();
 let attribute_map = new Map();
+
+export const AddEntityNodes = (data,layer_position)=>{
+    console.log(layer_position);
+}
+
 export const getLogic = () => {
     const node_map = {};
     let starting_index = 0;
@@ -27,8 +33,8 @@ export const getLogic = () => {
     // console.log(initialNodes);
     // initialNodes =[...initialNodes,...getData];
     // console.log(initialNodes);
-    console.log(entity_map);
-    console.log(attribute_map);
+    // console.log(entity_map);
+    // console.log(attribute_map);
     return [initialNodes,initialEdges];
 }
 

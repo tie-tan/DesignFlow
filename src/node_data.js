@@ -4,18 +4,20 @@ import React from 'react';
 import { Handle,Position,NodeProps,useStore} from 'reactflow';
 import { useState, useRef } from 'react';
 import Collapsible from 'react-collapsible';
+import { AddEntityNodes } from './getSolutionLogic';
  
 export function Node({id,data,position}) {
+  // const [layer_position,setLayerPosition] = useState();
+  let layer_position;
   const wrapperRef = useRef(null);
  // const collapsibleRef = useRef(null);
   const [collapsiblePosition, setCollapsiblePosition] = useState({});
   const [displayName, setInputValue] = useState(`${data.displayName}`);
 
-  const handleClickCollapsible = () => {
+  const handleClickCollapsible = (event) => {
     if (wrapperRef.current) {
-      const position = wrapperRef.current.getBoundingClientRect();
-      console.log('Collapsible position:', position);
-      // You can use `position` as needed
+      layer_position = wrapperRef.current.getBoundingClientRect();
+      AddEntityNodes(data,layer_position);
     }
   };
 
@@ -37,28 +39,13 @@ export function Node({id,data,position}) {
     return layerInformation;
   }
 
-  function getAttributeData(){
-    for(let layer in entity_data){
-      for(let i = 0;i<entity_data[layer].length;i++){
-        
-      }
-    }
-  }  
-
-  function StopPropagation(event){
-    event.stopPropagation();
-  }
-
   const zoomSelector = (s) => s.transform[2]<=0.45;
-  const entity_data = getEntityData();
-  const attribute_data = getAttributeData();
   const showContent = useStore(zoomSelector);
   const icon = (data.agents[0].agentType=='machine')?faCog:faPerson;
   const iconColor = (data.agents[0].agentType=='machine')?'#FF6C37':'blue';
-  // const BoxRef = React.useRef();
 
-  // function showPosition(){
-  //   console.log(BoxRef.current.offsetTop);
+  // function StopPropagation(event) {
+  //   event.stopPropagation();
   // }
 
   return (
@@ -70,7 +57,7 @@ export function Node({id,data,position}) {
         <div style={{color:iconColor,width:20,fontSize:40,marginLeft:8,marginTop:13,marginRight:8}}><FontAwesomeIcon  icon={icon} /></div>
         <div style = {{width:320,textAlign:'center',alignItems:'center',display:'flex',justifyContent:'center'}}>{data.displayName}</ div>
       </div> 
-      :<div ref = {wrapperRef} style={{height:304,width:254,border:'1px solid black', borderRadius:4,display:'flex',flexDirection:'column'}}>
+      :<div style={{height:304,width:254,border:'1px solid black', borderRadius:4,display:'flex',flexDirection:'column'}}>
       <div style={{height:40,backgroundColor:'#f5f5f5',paddingLeft:16,borderBottom:'1px solid #D0D0D0',display:'flex',flexDirection:'row'}}>
         <div style={{height:10,width:10,transform:'rotate(45deg)',backgroundColor:'#808080',marginRight:10,marginTop:14}}></div>
         <div style={{fontFamily:'Inter',fontSize:12,marginTop:12}}>{data.name}</div>
@@ -88,9 +75,9 @@ export function Node({id,data,position}) {
           <div style={{fontSize:12,color:'#333333'}}>{data.agents[0].agentType}</div>
         </div>
       </div>
-      <div >
+      <div>
           {data.layers.map((item) => (
-            <div onClick={StopPropagation} style={{
+            <div ref = {wrapperRef} style={{
               backgroundColor: '#f9f9f9',
               color: '#333',
               border: '1px solid #ccc',

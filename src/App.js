@@ -115,7 +115,7 @@ function Flow() {
         onNodesChange={onNodesChange}
         edges={edges }
         onEdgesChange={onEdgesChange}
-        //onConnect={onConnect}
+        // onConnect={onConnect}
         minZoom={0.2}
         fitView
       >

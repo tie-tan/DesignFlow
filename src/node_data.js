@@ -33,6 +33,11 @@ export function Node({id,data,position}) {
       }
     }
   }  
+
+  function StopPropagation(event){
+    event.stopPropagation();
+  }
+
   const zoomSelector = (s) => s.transform[2]<=0.45;
   const entity_data = getEntityData();
   const attribute_data = getAttributeData();
@@ -63,7 +68,7 @@ export function Node({id,data,position}) {
       <div style={{backgroundColor:'white',height:56}}>
         <div style={{margin:16,backgroundColor:'white'}}>
           <div style={{fontSize:11,color:'#808080'}}>Display Name</div>
-          <div><input style={{borderColor:'#d8dce0',borderWidth:0.5,borderRadius:2}} type='text' value={displayName} onChange={handleChange} placeholder='Enter Name' /></div>
+          <div onClick={StopPropagation}><input style={{borderColor:'#d8dce0',borderWidth:0.5,borderRadius:2}} type='text' value={displayName} onChange={handleChange} placeholder='Enter Name' /></div>
         </div>
       </div>
       <div style={{backgroundColor:'white',height:56}}>
@@ -83,8 +88,8 @@ export function Node({id,data,position}) {
               padding: '10px',
               cursor: 'pointer',
               alignItems: 'center',
-            }}>
-              <Collapsible trigger={item.type} >
+            }} onClick={StopPropagation}>
+              <Collapsible trigger={item.type}>
                 {item.participatingItems.map((x) => (
                   <div style={{
                     backgroundColor: '#dcd8dc',

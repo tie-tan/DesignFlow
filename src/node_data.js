@@ -14,12 +14,27 @@ export function Node({id,data,position}) {
   const [collapsiblePosition, setCollapsiblePosition] = useState({});
   const [displayName, setInputValue] = useState(`${data.displayName}`);
 
-  const handleClickCollapsible = (event) => {
+  const handleClickCollapsible = (layer) => {
     if (wrapperRef.current) {
       layer_position = wrapperRef.current.getBoundingClientRect();
-      AddEntityNodes(data,layer_position);
+      //AddEntityNodes(data,layer_position);
+      const layer_data = getInfoByType(data.layers, layer);
+      //console.log(layer_data);
+      const entityDataList = AddEntityNodes(layer_data, layer_position);
+      console.log(entityDataList);
+      
+      //console.log(layer);
+
     }
   };
+
+  function getInfoByType(layers, type) {
+    // Filter the layers array based on the given type
+    const filteredLayer = layers.find(layer => layer.type === type);
+
+    // Return the participating items of the filtered layer if found, otherwise return an empty array
+    return filteredLayer ? filteredLayer.participatingItems : [];
+}
 
   const handleChange = (event) => {
     setInputValue(event.target.value);
@@ -87,7 +102,7 @@ export function Node({id,data,position}) {
               cursor: 'pointer',
               alignItems: 'center',
             }} >
-              <Collapsible trigger={item.type} onOpening={handleClickCollapsible} >
+              <Collapsible trigger={item.type} onOpening={() => handleClickCollapsible(item.type)} >
                 {item.participatingItems.map((x) => (
                   <div style={{
                     backgroundColor: '#dcd8dc',

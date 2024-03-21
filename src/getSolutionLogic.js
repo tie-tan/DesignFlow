@@ -9,7 +9,9 @@ let entity_map = new Map();
 let attribute_map = new Map();
 
 export const AddEntityNodes = (data,layer_position)=>{
-    console.log(layer_position);
+    // console.log(layer_position);
+    // console.log(data);
+    return [data, layer_position];
 }
 
 export const getLogic = () => {

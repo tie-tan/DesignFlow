@@ -1,5 +1,8 @@
 import {json} from "./gsi";
 import {useGlobalState,getGlobalState,setGlobalState} from './App.js';
+import React from "react";
+import { useStore} from 'reactflow';
+import { zoomlevel } from "./App.js";
 
 export let initialNodes = [];
 let initialEdges = [];
@@ -7,10 +10,36 @@ let isvisited = {};
 let displayName_Map = {};
 let entity_map = new Map();
 let attribute_map = new Map();
-
-export const AddEntityNodes = (data,layer_position)=>{
+export const AddEntityNodes = (index,data,layer_position,node_position)=>{
+    console.log(zoomlevel);
     // console.log(layer_position);
-    // console.log(data);
+    console.log(layer_position);
+    //console.log(data[0].item.DATA.displayName);
+     //console.log(data[0].item);
+    const entity_nodes = [];
+    const display_Names =[];
+    let global_nodes = getGlobalState('nodes');
+    //console.log(global_nodes);
+    //let a = 1;
+    let cu_position = {};
+    for(let i =0; i< global_nodes.length; i++){
+        if(global_nodes[i].id == index){
+           cu_position = global_nodes[i].position; 
+        }
+    }
+     for(let i=0; i<data.length; i++){
+      let entitynode = {id : `${data[i].item.DATA.displayName}`,
+      position : {x:10, y: (layer_position.y-node_position.y+layer_position.height)/zoomlevel+i*40},
+      data: {label:`${data[i].item.DATA.displayName}`},
+      parentNode:`${index}`,
+      extent:'parent',
+    };
+      entity_nodes.push(entitynode);
+     }
+     global_nodes= global_nodes.concat(entity_nodes);
+     setGlobalState('nodes', global_nodes);
+     const test_nodes = getGlobalState('nodes');
+     console.log(global_nodes);
     return [data, layer_position];
 }
 

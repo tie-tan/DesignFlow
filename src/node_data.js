@@ -9,20 +9,25 @@ import { AddEntityNodes } from './getSolutionLogic';
 export function Node({id,data,position}) {
   // const [layer_position,setLayerPosition] = useState();
   let layer_position;
-  const wrapperRef = useRef(null);
+  let node_position;
+  const wrapperRef1 = useRef(null);
+  const wrapperRef2 = useRef(null);
  // const collapsibleRef = useRef(null);
   const [collapsiblePosition, setCollapsiblePosition] = useState({});
   const [displayName, setInputValue] = useState(`${data.displayName}`);
 
   const handleClickCollapsible = (layer) => {
-    if (wrapperRef.current) {
-      layer_position = wrapperRef.current.getBoundingClientRect();
+    if(wrapperRef1.current){
+      node_position = wrapperRef1.current.getBoundingClientRect();
+    }
+    if (wrapperRef2.current) {
+      layer_position = wrapperRef2.current.getBoundingClientRect();
       //AddEntityNodes(data,layer_position);
       const layer_data = getInfoByType(data.layers, layer);
       //console.log(layer_data);
-      const entityDataList = AddEntityNodes(layer_data, layer_position);
-      console.log(entityDataList);
-      
+      const entityDataList = AddEntityNodes(data.index,layer_data, layer_position,node_position);
+      //console.log(entityDataList);
+        
       //console.log(layer);
 
     }
@@ -64,7 +69,7 @@ export function Node({id,data,position}) {
   // }
 
   return (
-    <div>
+    <div ref = {wrapperRef1} style= {{overflow: 'auto'}}>
       < Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Right} />
       {showContent
@@ -92,7 +97,7 @@ export function Node({id,data,position}) {
       </div>
       <div>
           {data.layers.map((item) => (
-            <div ref = {wrapperRef} style={{
+            <div ref = {wrapperRef2} style={{
               backgroundColor: '#f9f9f9',
               color: '#333',
               border: '1px solid #ccc',
@@ -103,7 +108,7 @@ export function Node({id,data,position}) {
               alignItems: 'center',
             }} >
               <Collapsible trigger={item.type} onOpening={() => handleClickCollapsible(item.type)} >
-                {item.participatingItems.map((x) => (
+                {/* {item.participatingItems.map((x) => (
                   <div style={{
                     backgroundColor: '#dcd8dc',
                     color: '#333',
@@ -129,7 +134,7 @@ export function Node({id,data,position}) {
                       ))}
                     </Collapsible>
                   </div>
-                ))}
+                ))} */}
               </Collapsible>
             </div>
           ))}

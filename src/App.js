@@ -12,6 +12,7 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   useReactFlow,
+  useStore,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { getLogic } from './getSolutionLogic';
@@ -20,6 +21,8 @@ import { createGlobalState } from 'react-hooks-global-state';
 
 const [initialNodes,initialEdges] = getLogic();
 const initialState = {nodes:initialNodes};
+const zoomSelector = (s) => s.transform[2];
+export let zoomlevel = 1;
 export const {useGlobalState,getGlobalState,setGlobalState} = createGlobalState(initialState);
 
 const elk = new ELK();
@@ -28,6 +31,9 @@ const nodeTypes = {
 }
 
 export function Flow() {
+  const showContent = useStore(zoomSelector);
+  zoomlevel = showContent;
+  // console.log(showContent);
   const [nodes,,onNodesChange] = useGlobalState('nodes');
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
   const [isSliderOpen, setSliderOpen] = useState(false);
@@ -56,7 +62,7 @@ export function Flow() {
       document.removeEventListener('click', handleClickOutsideSlider);
     };
   }, [isSliderOpen]);
-
+  console.log(nodes);
   return (
     <div style={{ height: '100vw'}} >
       <ReactFlow  

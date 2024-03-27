@@ -13,10 +13,12 @@ export function Node({id,data,position}) {
   const wrapperRef1 = useRef(null);
   const wrapperRef2 = useRef(null);
  // const collapsibleRef = useRef(null);
+ const [showNodes, setShowNodes] = useState(false);
   const [collapsiblePosition, setCollapsiblePosition] = useState({});
   const [displayName, setInputValue] = useState(`${data.displayName}`);
 
   const handleClickCollapsible = (layer) => {
+    setShowNodes(!showNodes);
     if(wrapperRef1.current){
       node_position = wrapperRef1.current.getBoundingClientRect();
     }
@@ -107,7 +109,7 @@ export function Node({id,data,position}) {
               cursor: 'pointer',
               alignItems: 'center',
             }} >
-              <Collapsible trigger={item.type} onOpening={() => handleClickCollapsible(item.type)} >
+              <Collapsible trigger={item.type} onOpening={() => handleClickCollapsible(item.type)} onClosing={() => handleClickCollapsible(item.type)} >
                 {/* {item.participatingItems.map((x) => (
                   <div style={{
                     backgroundColor: '#dcd8dc',
